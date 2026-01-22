@@ -1,0 +1,59 @@
+[package]
+name = "mindtype-tauri"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# Tauri
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-shell = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-updater = { version = "2", default-features = false, features = ["native-tls"] }
+
+# Workspace crates
+mindtype-core = { path = "../mindtype-core" }
+mindtype-whisper = { path = "../mindtype-whisper" }
+mindtype-platform = { path = "../mindtype-platform" }
+mindtype-licensing = { path = "../mindtype-licensing" }
+mindtype-llm = { path = "../mindtype-llm" }
+
+# Async
+tokio.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+
+# Utilities
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+directories.workspace = true
+once_cell.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+futures-util.workspace = true
+reqwest.workspace = true
+
+# Crash reporting
+regex = "1"
+os_info = "3"
+
+# Utilities
+open = "5"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

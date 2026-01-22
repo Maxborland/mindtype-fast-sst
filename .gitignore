@@ -1,0 +1,38 @@
+# Build outputs
+target/
+dist/
+node_modules/
+test-results/
+playwright-report/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+debug.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Tauri
+gen/
+
+# Temp
+nul
+*.tmp
+
+# Claude Code
+.auto-claude/
+.claude/
+.playwright-mcp/
+plans/

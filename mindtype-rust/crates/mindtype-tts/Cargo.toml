@@ -1,0 +1,27 @@
+[package]
+name = "mindtype-tts"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Async runtime
+tokio = { workspace = true }
+async-trait = "0.1"
+
+# HTTP for Edge TTS WebSocket
+reqwest = { workspace = true }
+tokio-tungstenite = { version = "0.21", features = ["native-tls"] }
+futures-util = { workspace = true }
+
+# Audio playback
+rodio = { version = "0.19", default-features = false, features = ["mp3"] }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Utilities
+uuid = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }

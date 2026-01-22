@@ -1,0 +1,19 @@
+[package]
+name = "mindtype-text-processor"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Regex for pattern matching
+regex = "1"
+
+# Lazy initialization
+once_cell = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+
+# Utilities
+thiserror = { workspace = true }
+
+[dev-dependencies]

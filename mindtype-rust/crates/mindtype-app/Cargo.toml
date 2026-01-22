@@ -1,0 +1,49 @@
+[package]
+name = "mindtype-app"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "mindtype"
+path = "src/main.rs"
+
+[dependencies]
+# UI
+iced = { workspace = true }
+
+# Core
+mindtype-core = { path = "../mindtype-core" }
+mindtype-platform = { path = "../mindtype-platform" }
+mindtype-licensing = { path = "../mindtype-licensing" }
+mindtype-llm = { path = "../mindtype-llm" }
+mindtype-whisper = { path = "../mindtype-whisper" }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+futures = "0.3"
+
+# HTTP
+reqwest = { workspace = true }
+
+# Utilities
+uuid = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+directories = { workspace = true }
+once_cell = { workspace = true }
+
+[target.'cfg(windows)'.dependencies]
+windows = { workspace = true }
+
+[build-dependencies]
+embed-resource = "3"
+
+[dev-dependencies]
+tokio-test = "0.4"

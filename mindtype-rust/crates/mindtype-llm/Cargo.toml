@@ -1,0 +1,25 @@
+[package]
+name = "mindtype-llm"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# HTTP
+reqwest = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+async-trait = "0.1"
+
+# Utilities
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+tokio-test = "0.4"
+wiremock = "0.6"

@@ -1,0 +1,22 @@
+[package]
+name = "mindtype-assistant"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Async runtime
+tokio = { workspace = true }
+
+# LLM and TTS
+mindtype-llm = { path = "../mindtype-llm" }
+mindtype-tts = { path = "../mindtype-tts" }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Utilities
+uuid = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }

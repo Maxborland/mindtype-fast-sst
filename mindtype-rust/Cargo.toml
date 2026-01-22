@@ -1,0 +1,81 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/mindtype-app",
+    "crates/mindtype-core",
+    "crates/mindtype-platform",
+    "crates/mindtype-licensing",
+    "crates/mindtype-llm",
+    "crates/mindtype-whisper",
+    "crates/mindtype-tauri",
+    "crates/mindtype-text-processor",
+    "crates/mindtype-tts",
+    "crates/mindtype-assistant",
+]
+
+[workspace.package]
+version = "1.0.0"
+edition = "2021"
+authors = ["MindType Team"]
+license = "MIT"
+repository = "https://github.com/mindtype/mindtype"
+
+[workspace.dependencies]
+# UI
+iced = { version = "0.13", features = ["canvas", "tokio", "multi-window"] }
+
+# Audio
+cpal = "0.15"
+hound = "3.5"
+
+# Whisper ONNX
+ort = { version = "2.0.0-rc.11", features = ["load-dynamic"] }
+ndarray = "0.16"
+
+# Async
+tokio = { version = "1", features = ["full"] }
+
+# HTTP
+reqwest = { version = "0.12", features = ["json", "native-tls", "stream"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+# Crypto (licensing)
+hmac = "0.12"
+sha2 = "0.10"
+base64 = "0.22"
+
+# Utilities
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "2"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+directories = "5"
+once_cell = "1"
+futures-util = "0.3"
+
+# Platform (Windows)
+[workspace.dependencies.windows]
+version = "0.58"
+features = [
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_System_DataExchange",
+    "Win32_Foundation",
+    "Win32_UI_Shell",
+    "Win32_System_Threading",
+    "Win32_Security",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Registry",
+    "Win32_System_Memory",
+]
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

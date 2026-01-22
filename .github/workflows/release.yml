@@ -1,0 +1,119 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-tauri:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows-latest
+            target: x86_64-pc-windows-msvc
+            args: ''
+          - platform: macos-latest
+            target: aarch64-apple-darwin
+            args: '--target aarch64-apple-darwin'
+          - platform: macos-latest
+            target: x86_64-apple-darwin
+            args: '--target x86_64-apple-darwin'
+          - platform: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+    defaults:
+      run:
+        working-directory: mindtype-rust
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: mindtype-rust/crates/mindtype-tauri/src-ui/package-lock.json
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: mindtype-rust
+
+      - name: Install frontend dependencies
+        working-directory: mindtype-rust/crates/mindtype-tauri/src-ui
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: mindtype-rust/crates/mindtype-tauri/src-ui
+        run: npm run build
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Windows code signing
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          # macOS code signing and notarization
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        with:
+          projectPath: mindtype-rust/crates/mindtype-tauri
+          tauriScript: npx tauri
+          args: ${{ matrix.args }}
+          tagName: v__VERSION__
+          releaseName: 'MindType v__VERSION__'
+          releaseBody: 'See the assets for download links and installation instructions.'
+          releaseDraft: true
+          prerelease: false
+
+  # Aggregate artifacts
+  create-release:
+    needs: build-tauri
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create release notes
+        run: |
+          echo "## MindType Release" > RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "### Downloads" >> RELEASE_NOTES.md
+          echo "- **Windows**: MindType_x.x.x_x64-setup.exe" >> RELEASE_NOTES.md
+          echo "- **macOS (Apple Silicon)**: MindType_x.x.x_aarch64.dmg" >> RELEASE_NOTES.md
+          echo "- **macOS (Intel)**: MindType_x.x.x_x64.dmg" >> RELEASE_NOTES.md
+          echo "- **Linux**: MindType_x.x.x_amd64.AppImage" >> RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "### What's New" >> RELEASE_NOTES.md
+          echo "See [CHANGELOG.md](CHANGELOG.md) for details." >> RELEASE_NOTES.md

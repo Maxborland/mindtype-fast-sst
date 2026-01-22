@@ -1,0 +1,411 @@
+/* Mac OS System 7/8 Theme */
+
+/* === CSS Variables === */
+:root {
+  /* Background colors */
+  --wizard-bg: #F5F5F5;
+  --main-bg: #9E9E9E;
+
+  /* Frame colors */
+  --frame-outer: #000000;
+  --frame-inner-light: #FFFFFF;
+  --frame-inner-dark: #808080;
+
+  /* Button colors */
+  --button-face: #D9D9D9;
+  --button-highlight: #FFFFFF;
+  --button-shadow: #808080;
+  --button-active: #BBBBBB;
+
+  /* Text colors */
+  --text-primary: #000000;
+  --text-secondary: #555555;
+  --text-disabled: #888888;
+
+  /* Accent colors */
+  --recording-red: #CC0000;
+  --recording-red-dark: #990000;
+  --selection-blue: #3366CC;
+
+  /* Title bar */
+  --titlebar-stripe-1: #FFFFFF;
+  --titlebar-stripe-2: #000000;
+  --titlebar-bg: #CCCCCC;
+
+  /* Spacing */
+  --window-padding: 8px;
+  --element-gap: 8px;
+}
+
+/* === Reset & Base === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Chicago", "Geneva", "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: var(--text-primary);
+  background: transparent;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+/* Allow dragging window from title bar */
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* === Window Frame === */
+.window {
+  background: var(--wizard-bg);
+  border: 2px solid var(--frame-outer);
+  box-shadow:
+    inset 1px 1px 0 var(--frame-inner-light),
+    inset -1px -1px 0 var(--frame-inner-dark);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.window--dark {
+  background: var(--main-bg);
+}
+
+/* === Title Bar === */
+.titlebar {
+  height: 20px;
+  background: var(--titlebar-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  gap: 6px;
+  border-bottom: 1px solid var(--frame-outer);
+}
+
+.titlebar__stripes {
+  flex: 1;
+  height: 11px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--titlebar-stripe-1) 0px,
+    var(--titlebar-stripe-1) 1px,
+    var(--titlebar-stripe-2) 1px,
+    var(--titlebar-stripe-2) 2px
+  );
+}
+
+.titlebar__title {
+  font-weight: bold;
+  font-size: 12px;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+.titlebar__close {
+  width: 13px;
+  height: 11px;
+  border: 1px solid var(--frame-outer);
+  background: var(--button-face);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.titlebar__close:hover {
+  background: var(--button-active);
+}
+
+.titlebar__close:active {
+  background: var(--frame-inner-dark);
+}
+
+/* === Buttons === */
+.btn {
+  background: var(--button-face);
+  border: 2px solid var(--frame-outer);
+  box-shadow:
+    inset 1px 1px 0 var(--button-highlight),
+    inset -1px -1px 0 var(--button-shadow);
+  padding: 4px 16px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 80px;
+  text-align: center;
+}
+
+.btn:hover {
+  background: #E5E5E5;
+}
+
+.btn:active {
+  background: var(--button-active);
+  box-shadow:
+    inset -1px -1px 0 var(--button-highlight),
+    inset 1px 1px 0 var(--button-shadow);
+}
+
+.btn:disabled {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  border-width: 3px;
+  font-weight: bold;
+}
+
+.btn--record {
+  background: var(--recording-red);
+  color: white;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  min-width: unset;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn--record:hover {
+  background: var(--recording-red-dark);
+}
+
+/* === Radio Buttons === */
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.radio__input {
+  display: none;
+}
+
+.radio__mark {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--frame-outer);
+  background: var(--button-face);
+  clip-path: polygon(
+    30% 0%, 70% 0%, 100% 30%, 100% 70%,
+    70% 100%, 30% 100%, 0% 70%, 0% 30%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio__input:checked + .radio__mark::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--frame-outer);
+  clip-path: polygon(
+    30% 0%, 70% 0%, 100% 30%, 100% 70%,
+    70% 100%, 30% 100%, 0% 70%, 0% 30%
+  );
+}
+
+.radio__label {
+  font-size: 12px;
+}
+
+/* === Text Field === */
+.textfield {
+  background: white;
+  border: 2px solid var(--frame-outer);
+  box-shadow:
+    inset 1px 1px 0 var(--button-shadow),
+    inset -1px -1px 0 var(--button-highlight);
+  padding: 4px 6px;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.textfield:focus {
+  border-color: var(--selection-blue);
+}
+
+/* === Tab Bar === */
+.tabbar {
+  display: flex;
+  background: var(--main-bg);
+  padding: 0 4px;
+  gap: 2px;
+}
+
+.tabbar__tab {
+  background: var(--button-face);
+  border: 1px solid var(--frame-outer);
+  border-bottom: none;
+  padding: 4px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+}
+
+.tabbar__tab--active {
+  background: var(--wizard-bg);
+  border-bottom: 1px solid var(--wizard-bg);
+  z-index: 1;
+}
+
+.tabbar__tab:hover:not(.tabbar__tab--active) {
+  background: #E5E5E5;
+}
+
+/* === Panel === */
+.panel {
+  background: var(--wizard-bg);
+  border: 2px solid var(--frame-outer);
+  box-shadow:
+    inset 1px 1px 0 var(--frame-inner-light),
+    inset -1px -1px 0 var(--frame-inner-dark);
+  padding: var(--window-padding);
+}
+
+.panel--sunken {
+  box-shadow:
+    inset 1px 1px 0 var(--frame-inner-dark),
+    inset -1px -1px 0 var(--frame-inner-light);
+}
+
+/* === Progress Bar === */
+.progress {
+  height: 16px;
+  background: white;
+  border: 2px solid var(--frame-outer);
+  box-shadow:
+    inset 1px 1px 0 var(--button-shadow),
+    inset -1px -1px 0 var(--button-highlight);
+  overflow: hidden;
+}
+
+.progress__bar {
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--selection-blue),
+    var(--selection-blue) 4px,
+    #5588DD 4px,
+    #5588DD 8px
+  );
+  transition: width 0.3s ease;
+}
+
+/* === List === */
+.list {
+  background: white;
+  border: 2px solid var(--frame-outer);
+  box-shadow:
+    inset 1px 1px 0 var(--button-shadow),
+    inset -1px -1px 0 var(--button-highlight);
+  overflow-y: auto;
+}
+
+.list__item {
+  padding: 4px 8px;
+  border-bottom: 1px solid #E0E0E0;
+  cursor: pointer;
+}
+
+.list__item:hover {
+  background: #E8E8E8;
+}
+
+.list__item--selected {
+  background: var(--selection-blue);
+  color: white;
+}
+
+/* === Waveform === */
+.waveform {
+  background: var(--frame-outer);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 8px;
+}
+
+.waveform__bar {
+  width: 3px;
+  background: #00FF00;
+  transition: height 0.05s ease;
+}
+
+/* === Recording Indicator === */
+.recording-indicator {
+  width: 12px;
+  height: 12px;
+  background: var(--recording-red);
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* === Overlay Window === */
+.overlay {
+  background: rgba(50, 50, 50, 0.95);
+  border: 2px solid var(--frame-outer);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+}
+
+.overlay__time {
+  font-family: "Monaco", "Consolas", monospace;
+  font-size: 14px;
+  min-width: 48px;
+}
+
+/* === Utilities === */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.p-1 { padding: 4px; }
+.p-2 { padding: 8px; }
+.p-3 { padding: 12px; }
+.p-4 { padding: 16px; }
+.m-auto { margin: auto; }
+.text-center { text-align: center; }
+.font-bold { font-weight: bold; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
