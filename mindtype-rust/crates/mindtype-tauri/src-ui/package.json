@@ -19,7 +19,7 @@
     "@tauri-apps/api": "^2.3.0",
     "@tsconfig/svelte": "^5.0.4",
     "@playwright/test": "^1.50.0",
-    "svelte": "^5.20.0",
+    "svelte": "^5.49.2",
     "svelte-check": "^4.1.4",
     "typescript": "^5.7.3",
     "vite": "^6.1.0"
