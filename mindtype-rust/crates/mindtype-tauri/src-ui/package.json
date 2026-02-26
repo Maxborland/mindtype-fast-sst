@@ -15,7 +15,7 @@
     "test:e2e:headed": "playwright test --headed"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "@tauri-apps/api": "^2.3.0",
     "@tsconfig/svelte": "^5.0.4",
     "@playwright/test": "^1.50.0",
